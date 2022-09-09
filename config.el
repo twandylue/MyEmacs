@@ -82,3 +82,13 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; move entire line
+(define-key evil-visual-state-map (kbd "M-j") (concat ":m '>+1" (kbd "RET") "gv=gv"))
+(define-key evil-visual-state-map (kbd "M-k")   (concat ":m '<-2" (kbd "RET") "gv=gv"))
+(define-key evil-normal-state-map (kbd "M-j") (concat ":m +1" (kbd "RET") "=="))
+(define-key evil-normal-state-map (kbd "M-k")   (concat ":m -2" (kbd "RET") "=="))
+
+;; git-gutter(fringe) on the fly
+(after! git-gutter
+  (setq git-gutter:update-interval 0.2))
