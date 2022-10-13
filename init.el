@@ -1,6 +1,3 @@
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
-
 ;; packages
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
@@ -32,6 +29,7 @@
 (require 'evil)
 (evil-mode 1)
 (setq evil-insert-state-cursor '("white" (box . 4)))
+
 ;; move entire line
 (define-key evil-visual-state-map (kbd "M-j") (concat ":m '>+1" (kbd "RET") "gv=gv"))
 (define-key evil-visual-state-map (kbd "M-k")   (concat ":m '<-2" (kbd "RET") "gv=gv"))
@@ -53,7 +51,7 @@
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 
-;; 更改显示字体大小 16pt
+;; 更改显示字体大小 14pt
 ;; http://stackoverflow.com/questions/294664/how-to-set-the-font-size-in-emacs
 (set-face-attribute 'default nil :height 140);;
 
@@ -63,6 +61,8 @@
 
 ;; Disable backup file
 (setq make-backup-files nil)
+;; highlight current line
+(global-hl-line-mode 1)
 
 ;; 快速打开配置文件
 (defun open-init-file()
