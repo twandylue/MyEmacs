@@ -1,3 +1,4 @@
+;; TODO: packages settings is not finished
 ;; packages
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
@@ -18,7 +19,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(evil-exchange evil-nerd-commenter evil company)))
+ '(package-selected-packages '(ack evil-exchange evil-nerd-commenter evil company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -29,7 +30,6 @@
 (require 'evil)
 (evil-mode 1)
 (setq evil-insert-state-cursor '("white" (box . 4)))
-
 ;; move entire line
 (define-key evil-visual-state-map (kbd "M-j") (concat ":m '>+1" (kbd "RET") "gv=gv"))
 (define-key evil-visual-state-map (kbd "M-k")   (concat ":m '<-2" (kbd "RET") "gv=gv"))

@@ -1,2 +1,3 @@
 # MyEmacs
-MyEmacs(DoomEmacs)
+
+MyEmacs(pure Emacs)
