@@ -1,19 +1,33 @@
 (setq user-full-name "AndyLu")
-;; TODO: packages settings is not finished
+
+(setq inhibit-startup-screen t)
+
 ;; packages
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")))
-(package-initialize)
+                         ;; ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+;;个别时候会出现签名检验失败
+(setq package-check-signature nil) 
 
-(defun require-package (package)
-  (setq-default highlight-tabs t)
-  "Install given PACKAGE."
-  (unless (package-installed-p package)
-    (unless (assoc package package-archive-contents)
-      (package-refresh-contents))
-    (package-install package)))
+;; 初始化软件包管理器
+(require 'package)
+(unless (bound-and-true-p package--initialized)
+    (package-initialize))
+
+;; 刷新软件源索引
+(unless package-archive-contents
+    (package-refresh-contents))
+
+;; 第一个扩展插件：use-package，用来批量统一管理软件包
+(unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
 
 (require 'evil)
 (evil-mode 1)
@@ -38,9 +52,6 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
-;; 关闭文件滑动控件
-(scroll-bar-mode -1)
-
 ;; relative line number
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
@@ -56,7 +67,6 @@
 ;; Disable backup file
 (setq make-backup-files nil)
 
-;; TODO: underline
 ;; highlight current line
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#3e4446")
@@ -78,28 +88,57 @@
 ;; 这一行代码，将函数 open-init-file 绑定到 <f2> 键上
 (global-set-key (kbd "<f2>") 'open-init-file)
 
-;; 开启全局 Company 补全
-(global-company-mode 1)
+(unless (package-installed-p 'company)
+  (package-install 'company))
+
+(use-package company
+  :hook (after-init . global-company-mode)
+  :config (setq company-minimum-prefix-length 1
+                company-show-quick-access t))
 
 ;; company mode 默认选择上一条和下一条候选项命令 M-n M-p
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
+;; WARN: failed
+;; (define-key company-active-map (kbd "C-n") 'company-select-next)
+;; (define-key company-active-map (kbd "C-p") 'company-select-previous)
 
 ;; color scheme
-(load-theme 'misterioso)
+(unless (package-installed-p 'gruvbox-theme)
+  (package-install 'gruvbox-theme))
+(use-package gruvbox-theme
+  :init (load-theme 'gruvbox-dark-soft t))
 
-(custom-theme-set-faces
- 'misterioso
- '(cursor ((t (:background "#abb2bf")))))
-
-(enable-theme 'misterioso)
+;; TODO: Working...
+;; (use-package eglot
+;;   :hook ((c-mode
+;;           c++-mode
+;;           go-mode
+;;           java-mode
+;;           js-mode
+;;           python-mode
+;;           rust-mode
+;;           web-mode) . eglot-ensure)
+;;   :bind (("C-c e f" . #'eglot-format)
+;;          ("C-c e a" . #'eglot-code-actions)
+;;          ("C-c e i" . #'eglot-code-action-organize-imports)
+;;          ("C-c e q" . #'eglot-code-action-quickfix))
+;;   :config
+;;   ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+;;   (add-to-list 'eglot-server-programs '(web-mode "vls"))
+;;   (defun eglot-actions-before-save()
+;;     (add-hook 'before-save-hook
+;;               (lambda ()
+;;                 (call-interactively #'eglot-format)
+;;                 (call-interactively #'eglot-code-action-organize-imports))))
+;;   (add-hook 'eglot--managed-mode-hook #'eglot-actions-before-save))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(ack evil-exchange evil-nerd-commenter evil company)))
+ '(package-selected-packages
+   '(eglot ace-window magit smart-mode-line gruvbox-theme ack evil-exchange evil-nerd-commenter evil company)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
