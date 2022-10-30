@@ -1,3 +1,4 @@
+(setq user-full-name "AndyLu")
 ;; TODO: packages settings is not finished
 ;; packages
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -14,22 +15,14 @@
       (package-refresh-contents))
     (package-install package)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(ack evil-exchange evil-nerd-commenter evil company)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 (require 'evil)
 (evil-mode 1)
 (setq evil-insert-state-cursor '("white" (box . 4)))
+(evil-set-leader nil (kbd "SPC"))
+
+;; TODO: not finished
+;; (define-key evil-normal-state-map (kbd "s") #'save-buffer)
+
 ;; move entire line
 (define-key evil-visual-state-map (kbd "M-j") (concat ":m '>+1" (kbd "RET") "gv=gv"))
 (define-key evil-visual-state-map (kbd "M-k")   (concat ":m '<-2" (kbd "RET") "gv=gv"))
@@ -43,6 +36,7 @@
 ;; === basic settings
 ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 
 ;; 关闭文件滑动控件
 (scroll-bar-mode -1)
@@ -61,8 +55,20 @@
 
 ;; Disable backup file
 (setq make-backup-files nil)
+
+;; TODO: underline
 ;; highlight current line
 (global-hl-line-mode 1)
+(set-face-background 'hl-line "#3e4446")
+(set-face-background 'highlight "#222")
+(set-face-foreground 'highlight nil)
+(set-face-underline-p 'highlight t)
+;; (set-face-background hl-line-face "gray13")
+
+;; set scroll margin
+(setq scroll-margin 4)
+
+(show-paren-mode t)
 
 ;; 快速打开配置文件
 (defun open-init-file()
@@ -72,9 +78,31 @@
 ;; 这一行代码，将函数 open-init-file 绑定到 <f2> 键上
 (global-set-key (kbd "<f2>") 'open-init-file)
 
-; 开启全局 Company 补全
+;; 开启全局 Company 补全
 (global-company-mode 1)
 
 ;; company mode 默认选择上一条和下一条候选项命令 M-n M-p
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
+
+;; color scheme
+(load-theme 'misterioso)
+
+(custom-theme-set-faces
+ 'misterioso
+ '(cursor ((t (:background "#abb2bf")))))
+
+(enable-theme 'misterioso)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(ack evil-exchange evil-nerd-commenter evil company)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
